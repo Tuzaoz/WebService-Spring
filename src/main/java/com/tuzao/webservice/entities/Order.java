@@ -1,10 +1,11 @@
 package com.tuzao.webservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tuzao.webservice.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -13,20 +14,23 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private Integer orderStatus;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
 
-    public Order(Integer id, Instant moment, User client) {
-        this.id = id;
-        this.moment = moment;
-        this.client = client;
-    }
-
     public Order() {
 
+    }
+
+    public Order(Integer id, OrderStatus orderStatus, Instant moment, User client) {
+        this.id = id;
+        setOrderStatus(orderStatus);
+        this.moment = moment;
+        this.client = client;
     }
 
     public User getClient() {
@@ -51,6 +55,14 @@ public class Order implements Serializable {
 
     public void setMoment(Instant moment) {
         this.moment = moment;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(orderStatus);
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus.getCode();
     }
 
     @Override
