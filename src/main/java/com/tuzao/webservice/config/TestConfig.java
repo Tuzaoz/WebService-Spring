@@ -1,14 +1,8 @@
 package com.tuzao.webservice.config;
 
-import com.tuzao.webservice.entities.Category;
-import com.tuzao.webservice.entities.Order;
-import com.tuzao.webservice.entities.Product;
-import com.tuzao.webservice.entities.User;
+import com.tuzao.webservice.entities.*;
 import com.tuzao.webservice.entities.enums.OrderStatus;
-import com.tuzao.webservice.repositories.CategoryRepository;
-import com.tuzao.webservice.repositories.OrderRepository;
-import com.tuzao.webservice.repositories.ProductRepository;
-import com.tuzao.webservice.repositories.UserRepository;
+import com.tuzao.webservice.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +25,8 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    OrderItemRepository orderItemRepository;
 
 
     @Override
@@ -52,6 +48,11 @@ public class TestConfig implements CommandLineRunner {
         Product p4 = new Product(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
         Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
 
+        OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+        OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+        OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+
         userRepository.saveAll(Arrays.asList(u1,u2));
         orderRepository.saveAll(Arrays.asList(o1,o2,o3));
         categoryRepository.saveAll(Arrays.asList(cat1,cat2,cat3));
@@ -65,7 +66,7 @@ public class TestConfig implements CommandLineRunner {
         p4.getCategory().add(cat3);
         p5.getCategory().add(cat2);
         productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
-
+        orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
 
 
     }
