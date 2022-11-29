@@ -1,5 +1,6 @@
 package com.tuzao.webservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -15,6 +16,9 @@ public class Product implements Serializable {
     private String description;
     private Double price;
     private String imgUrl;
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> orders =new HashSet<>();
+
     @ManyToMany
     @JoinTable(name = "tb_product_category",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -71,8 +75,15 @@ public class Product implements Serializable {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
-
-
+    @JsonIgnore
+    public Set<Order> getOrders() {
+        Set<Order> set = new HashSet<>();
+        for (OrderItem x: orders
+             ) { set.add(x.getOrder());
+            
+        }
+        return set;
+    }
 
     public Set<Category> getCategory() {
         return category;
