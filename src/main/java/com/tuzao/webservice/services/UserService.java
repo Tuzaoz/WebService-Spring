@@ -2,6 +2,7 @@ package com.tuzao.webservice.services;
 
 import com.tuzao.webservice.entities.User;
 import com.tuzao.webservice.repositories.UserRepository;
+import com.tuzao.webservice.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class UserService {
     }
     public User findById(Long id){
          Optional<User> obj = repository.findById(id);
-         return obj.get();
+         return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
     public User insert(User obj){
         return repository.save(obj);
