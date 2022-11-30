@@ -9,4 +9,14 @@ services:
     - type: bind
       source: /var/run/docker.sock
       target: /var/run/docker.sock
+      backend:
+        container_name: taskitory-backend
+        build:
+          context: .
+          args:
+            - DB_ADDR_ALIAS=${DB_ADDR_ALIAS}
+            - DB_PORT=${DB_PORT}
+            - DB_NAME=${DB_NAME}
+            - DB_CLIENT_USER=${DB_CLIENT_USER}
+            - DB_CLIENT_PW=${DB_CLIENT_PW}
 
